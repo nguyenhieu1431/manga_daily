@@ -29,14 +29,13 @@ class HomePage extends StatelessWidget{
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => DetailChapterManga()
+                          builder: (context) => DetailChapterManga(items: List<String>.generate(20, (i) => "Item $i"))
                       )
                   );
                 },
                 child: Column(
                     children: [
-                      Image.asset('assets/images/lake.jpg',
-                          fit: BoxFit.fitWidth),
+                      Image.network('https://picsum.photos/250?image=9'),
                       titleSection,
                       buttonSection,
                       textSection
