@@ -49,8 +49,6 @@ class HomePage extends StatelessWidget{
                     'https://beeng.net/public/assets/manga_manhwa/LHM.jpg',
                     fit: BoxFit.cover,
                   ),
-                  titleSection,
-                  buttonSection,
                   textSection
                 ]))
           ],
@@ -92,14 +90,13 @@ class HomePage extends StatelessWidget{
 
   Widget textSection = Container(
       padding: EdgeInsets.all(20),
-      child: Text('Lake Oeschinen lies at the foot of the Blüemlisalp in the Bernese '
-          'Alps. Situated 1,578 meters above sea level, it is one of the '
-          'larger Alpine Lakes. A gondola ride from Kandersteg, followed by a '
-          'half-hour walk through pastures and pine forest, leads you to the '
-          'lake, which warms to 20 degrees Celsius in the summer. Activities '
-          'enjoyed here include rowing, and riding the summer toboggan run.',
-          softWrap: true)
-  );
+      child: Text(
+          'Đây là tác phẩm manhua lừng danh của Hoàng Ngọc Lang được làm '
+              'lại từ bộ manhua long hổ môn nổi đình đám suốt từ những năm '
+              '70 đã đưa tên tuổi Hoàng Ngọc Lang đứng vững đến ngày nay.'
+              ' bộ truyện xoay quanh cuộc đời của Vương Tiểu Long, Vương Tiểu Hổ,'
+              ' Thạch Hắc Long cùng Long Hổ Võ Quán...',
+          softWrap: true));
 
 }
 
