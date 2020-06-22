@@ -11,11 +11,12 @@ class DetailChapterManga extends StatelessWidget{
       appBar: AppBar(
         title: Text("Detail Chapter Page"),
       ),
-      body: ListView.builder(
-          itemCount: items.length,
-          itemBuilder: (context,index){
-            return Image.network('https://cdn.beeng.net/i/b9/55/b9554d46cee4fe5bab731324e90973b6.jpeg',);
-      })
-    );
+        body: ListView.builder(
+            itemCount: items.length,
+            itemBuilder: (context, index) {
+              return Image.network(
+                items[index],
+              );
+            }));
   }
 }

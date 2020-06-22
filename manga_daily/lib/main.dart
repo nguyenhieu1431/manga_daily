@@ -20,6 +20,19 @@ class HomePage extends StatelessWidget{
 
   @override
   Widget build(BuildContext context) {
+    List<String> items = List<String>();
+
+    items.add('https://st.beeng.net/public/files/uploads/images/3b/1a/3b1a65072b348bc20ce16b79e4b7a67f.jpeg');
+    items.add('https://st.beeng.net/public/files/uploads/images/ce/55/ce557eac6cf449ddc05e4efff8c17dc6.jpeg');
+    items.add('https://st.beeng.net/public/files/uploads/images/d3/97/d3974f4aa9ff893e955611755bcd09a4.jpeg');
+    items.add('https://st.beeng.net/public/files/uploads/images/98/f0/98f01c492cb06e55917aab0df6025481.jpeg');
+    items.add('https://st.beeng.net/public/files/uploads/images/0f/72/0f726584274d0503d7da0cc76467d35d.jpeg');
+    items.add('https://st.beeng.net/public/files/uploads/images/ac/b3/acb3d2e1293b7b7c031fc946b51e09a9.jpeg');
+    items.add('https://st.beeng.net/public/files/uploads/images/b5/b0/b5b07c89f945238b60f161e98f81a50a.jpeg');
+    items.add('https://st.beeng.net/public/files/uploads/images/97/c7/97c7ef1277b95a7ed0c492971016c58d.jpeg');
+    items.add('https://st.beeng.net/public/files/uploads/images/f7/68/f768b358e59639cbd9dbb935eb446e8b.jpeg');
+    items.add('https://st.beeng.net/public/files/uploads/images/73/b0/73b05223abcf60f3ba63a9aef4ea3192.jpeg');
+
     return Scaffold(
         appBar: AppBar(title: Text('Home Page'),),
         body: ListView(
@@ -29,20 +42,17 @@ class HomePage extends StatelessWidget{
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => DetailChapterManga(items: List<String>.generate(20, (i) => "Item $i"))
-                      )
-                  );
+                          builder: (context) => DetailChapterManga(items: items)));
                 },
-                child: Column(
-                    children: [
-                      Image.network('https://picsum.photos/250?image=9'),
-                      titleSection,
-                      buttonSection,
-                      textSection
-                    ]
-                ))
-
-
+                child: Column(children: [
+                  Image.network(
+                    'https://beeng.net/public/assets/manga_manhwa/LHM.jpg',
+                    fit: BoxFit.cover,
+                  ),
+                  titleSection,
+                  buttonSection,
+                  textSection
+                ]))
           ],
         )
     );
