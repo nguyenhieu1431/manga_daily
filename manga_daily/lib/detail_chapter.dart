@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class DetailChapterManga extends StatelessWidget{
   final List<String> items;
 
-  DetailChapterManga({Key key, @required this.items}) : super(key: key);
+  DetailChapterManga({Key key, this.items}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
