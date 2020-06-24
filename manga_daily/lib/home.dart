@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
+import 'package:flutter/services.dart';
 
 class HomePage extends StatefulWidget{
 
@@ -13,9 +14,27 @@ class _HomePageState extends State<HomePage>{
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+        statusBarColor: Colors.blue
+    ));
+
     return Scaffold(
-      appBar: AppBar(title: Text('Home Page')),
-      body: PageViewWithIndicator(),
+      body: SafeArea(
+        child: Stack(
+          children: <Widget>[
+            PageViewWithIndicator(),
+            Positioned(
+              top: 0,
+              left: 0,
+              right: 0,
+              child: AppBar(
+                backgroundColor: Colors.transparent,
+                elevation: 0.0,
+              ),
+            )
+          ],
+        ),
+      )
     );
   }
 }
@@ -63,10 +82,49 @@ class PageViewWithIndicator extends StatelessWidget{
                 _controller.add(page);
               }
           ),
-          Container(
-            margin: EdgeInsets.only(bottom: 8),
-            alignment: Alignment.bottomCenter,
-            child: _IndicatorDoc(stream: _controller.stream),
+          Positioned(
+            bottom: 0,
+            left: 0,
+            right: 0,
+            child: Column(
+              children: <Widget>[
+                Container(
+                  child: Text(
+                    'Tân tác long hổ môn',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        color: Colors.white, fontSize: 35, shadows: [
+                      Shadow(
+                        offset: Offset(3, 3),
+                        blurRadius: 10.0,
+                        color: Colors.black,
+                      ),
+                      Shadow(
+                        offset: Offset(-3, -3),
+                        blurRadius: 10.0,
+                        color: Colors.black,
+                      )
+                    ]),
+                  ),
+                ),
+                Container(
+                  margin: EdgeInsets.only(bottom: 8),
+                  child: _IndicatorDoc(stream: _controller.stream),
+                ),
+                Container(
+                  height: 32,
+                  width: double.infinity,
+                  color: Colors.transparent,
+                  child: new Container(
+                    decoration: new BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: new BorderRadius.only(
+                            topLeft: const Radius.circular(48),
+                            topRight: const Radius.circular(48))),
+                  ),
+                ),
+              ],
+            ),
           )
         ],
       )
@@ -131,7 +189,6 @@ class _IndicatorDocState extends State<_IndicatorDoc>{
   }
 }
 
-
 class _ViewPageItem extends StatelessWidget{
   final String url;
   final double width;
@@ -141,9 +198,11 @@ class _ViewPageItem extends StatelessWidget{
 
   @override
   Widget build(BuildContext context) {
-    return Image.network(url,
+    return FadeInImage.assetNetwork(
+        image: url,
         alignment: Alignment.topRight,
-        width:  width,
+        placeholder: 'assets/images/lake.jpg',
+        width: width,
         height: height,
         fit: BoxFit.cover);
   }
