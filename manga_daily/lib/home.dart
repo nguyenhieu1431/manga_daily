@@ -11,7 +11,6 @@ class HomePage extends StatefulWidget{
 }
 
 class _HomePageState extends State<HomePage>{
-
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
@@ -19,28 +18,34 @@ class _HomePageState extends State<HomePage>{
     ));
 
     return Scaffold(
+      backgroundColor: Colors.white,
       body: SafeArea(
-        child: Stack(
+        child:ListView(
           children: <Widget>[
-            PageViewWithIndicator(),
-            Positioned(
-              top: 0,
-              left: 0,
-              right: 0,
-              child: AppBar(
-                backgroundColor: Colors.transparent,
-                elevation: 0.0,
-              ),
-            )
+            Stack(
+              children: <Widget>[
+                PageViewWithIndicator(),
+                Positioned(
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  child: AppBar(
+                    backgroundColor: Colors.transparent,
+                    elevation: 0.0,
+                  ),
+                ),
+              ],
+            ),
+            buttonSection
           ],
-        ),
+        )
       )
     );
   }
 }
 
 class PageViewWithIndicator extends StatelessWidget{
-  StreamController<int> _controller = StreamController<int>();
+  final StreamController<int> _controller = StreamController<int>();
 
   @override
   Widget build(BuildContext context) {
@@ -132,7 +137,6 @@ class PageViewWithIndicator extends StatelessWidget{
   }
 }
 
-
 class _IndicatorDoc extends StatefulWidget{
   final Stream<int> stream;
 
@@ -207,4 +211,43 @@ class _ViewPageItem extends StatelessWidget{
         fit: BoxFit.cover);
   }
 
+}
+
+Widget buttonSection = Container(
+  child: Row(
+    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+    children: [
+      _buildButtonColumn(Colors.yellow, Icons.whatshot, 'Newest'),
+      _buildButtonColumn(Colors.greenAccent, Icons.insert_chart, 'Ranking'),
+      _buildButtonColumn(Colors.deepOrange, Icons.local_offer, 'Category'),
+    ],
+  ),
+);
+
+Column _buildButtonColumn(Color color, IconData icon, String label) {
+  return Column(
+    mainAxisSize: MainAxisSize.min,
+    mainAxisAlignment: MainAxisAlignment.center,
+    children: [
+      Container(
+        padding: EdgeInsets.all(4),
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          color: color
+        ),
+        child: Icon(icon, color: Colors.white),
+      ),
+      Container(
+        margin: const EdgeInsets.only(top: 8),
+        child: Text(
+          label,
+          style: TextStyle(
+            fontSize: 12,
+            fontWeight: FontWeight.w400,
+            color: Colors.black,
+          ),
+        ),
+      ),
+    ],
+  );
 }
