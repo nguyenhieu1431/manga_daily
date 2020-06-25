@@ -36,7 +36,10 @@ class _HomePageState extends State<HomePage>{
                 ),
               ],
             ),
-            buttonSection
+            buttonSection,
+            _NewestSection(),
+            _NewestSection(),
+            _NewestSection()
           ],
         )
       )
@@ -44,6 +47,8 @@ class _HomePageState extends State<HomePage>{
   }
 }
 
+
+// intro section
 class PageViewWithIndicator extends StatelessWidget{
   final StreamController<int> _controller = StreamController<int>();
 
@@ -61,7 +66,7 @@ class PageViewWithIndicator extends StatelessWidget{
           url: 'https://3.bp.blogspot.com/-nCnAvgBWZPk/WZExk5lsBSI/AAAAAAABryk/8prgWacUI1I9YZaAir9KbaTltfFsRJ6aQCLcBGAs/s0/Comicvn.net-Only-00004.jpeg',
           width: screenWidth,
           height: screenHeight),
-      _ViewPageItem(url: 'https://i.ytimg.com/vi/Edu7QzMEcyA/maxresdefault.jpg',
+      _ViewPageItem(url: 'https://c4.wallpaperflare.com/wallpaper/471/183/590/manga-anime-one-piece-monkey-d-luffy-wallpaper-preview.jpg',
           width: screenWidth,
           height: screenHeight),
       _ViewPageItem(url: 'https://i.ytimg.com/vi/Ww6wz0Sg6HQ/maxresdefault.jpg',
@@ -213,7 +218,10 @@ class _ViewPageItem extends StatelessWidget{
 
 }
 
+
+// tab section
 Widget buttonSection = Container(
+  margin: EdgeInsets.only(bottom: 42),
   child: Row(
     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
     children: [
@@ -250,4 +258,73 @@ Column _buildButtonColumn(Color color, IconData icon, String label) {
       ),
     ],
   );
+}
+
+//Newest Section
+class _NewestSection extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    return _NewestState();
+  }
+}
+
+class _NewestState extends State<_NewestSection>{
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        margin: EdgeInsets.only(left: 16, right: 16, bottom: 16),
+        child: Column(
+          mainAxisSize: MainAxisSize.max,
+          children: <Widget>[
+            Container(
+              margin: EdgeInsets.only(bottom: 16),
+              child: Row(
+                mainAxisSize: MainAxisSize.max,
+                children: <Widget>[
+                  Expanded(
+                      child: Text('New Comics',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 16))),
+                  Text('See All', style: TextStyle(color: Colors.black54))
+                ],
+              ),
+            ),
+            Container(
+              height: 170,
+              child: ListView(
+                scrollDirection: Axis.horizontal,
+                children: <Widget>[
+                  _buildNewestItem,
+                  _buildNewestItem,
+                  _buildNewestItem,
+                  _buildNewestItem,
+                  _buildNewestItem,
+                  _buildNewestItem,
+                ],
+              ),
+            )
+          ],
+        ));
+  }
+
+  Widget _buildNewestItem = Container(
+      width: 120,
+      margin: EdgeInsets.only(right: 10),
+      child: Column(
+        children: <Widget>[
+          ClipRRect(
+            borderRadius: BorderRadius.circular(8.0),
+            child:FadeInImage.assetNetwork(
+                image: 'https://beeng.net/public/assets/manga/2016/KhuMaLuc.jpg',
+                alignment: Alignment.topRight,
+                placeholder: 'assets/images/lake.jpg',
+                fit: BoxFit.cover)
+          ),
+          Text(
+            'Newest comic',
+            style:
+                TextStyle(fontWeight: FontWeight.bold, color: Colors.black87),
+          )
+        ],
+      ));
 }
