@@ -218,7 +218,6 @@ class _ViewPageItem extends StatelessWidget{
 
 }
 
-
 // tab section
 Widget buttonSection = Container(
   margin: EdgeInsets.only(bottom: 42),
