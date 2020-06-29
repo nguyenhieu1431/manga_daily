@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:flutter/services.dart';
+import '../category/category_comics.dart';
 
 class HomePage extends StatefulWidget{
 
@@ -284,7 +285,12 @@ class _NewestState extends State<_NewestSection>{
                       child: Text('New Comics',
                           style: TextStyle(
                               fontWeight: FontWeight.bold, fontSize: 16))),
-                  Text('See All', style: TextStyle(color: Colors.black54))
+                  InkWell(
+                    onTap: (){
+                      Navigator.push(context,  MaterialPageRoute(builder: (context) => CategoryComics()));
+                    },
+                    child: Text('See All', style: TextStyle(color: Colors.black54)),
+                  )
                 ],
               ),
             ),

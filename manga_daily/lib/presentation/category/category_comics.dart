@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class CategoryComics extends StatefulWidget{
@@ -10,8 +11,6 @@ class CategoryComics extends StatefulWidget{
 class _CategoryComicsState extends State<CategoryComics> with SingleTickerProviderStateMixin{
   TabController _tabController;
 
-  get data => List<String>.generate(30, (i) => "Item $i");
-
   @override
   void initState() {
     _tabController = new TabController(length: 2, vsync: this);
@@ -20,6 +19,7 @@ class _CategoryComicsState extends State<CategoryComics> with SingleTickerProvid
 
   @override
   Widget build(BuildContext context) {
+    List<String> data = List<String>.generate(30, (i) => "Item $i");
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -65,54 +65,93 @@ class __CategoryListState extends State<_CategoryListSection>{
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Column(
+    return Column(
         children: <Widget>[
-          ListView.builder(
-            itemCount: items.length,
-            itemBuilder: (context, index) {
-              return Card(
-                child: Padding(
-                  child: _buildCategoryItem
-                ),
-              );
-            },
+          Expanded(
+            child: ListView.builder(
+              itemCount: items.length,
+              itemBuilder: (context, index) {
+                return Padding(
+                  padding: EdgeInsets.all(12),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Container(
+                        margin: EdgeInsets.only(right: 12),
+                        child: ClipRRect(
+                            borderRadius: BorderRadius.circular(8.0),
+                            child: FadeInImage.assetNetwork(
+                                width: 100,
+                                image: 'https://beeng.net/public/assets/manga/2016/KhuMaLuc.jpg',
+                                alignment: Alignment.topRight,
+                                placeholder: 'assets/images/lake.jpg')),
+                      ),
+                      Expanded(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Container(
+                                  child: Text('Mortals of the Doom',
+                                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),),
+                                  margin: EdgeInsets.only(left:4, bottom: 12),
+                                ),
+                                Container(
+                                  child: Wrap(
+                                    children: <Widget>[
+                                      Card(
+                                        child: Container(
+                                          child: Text('Horror'),
+                                          margin: EdgeInsets.all(4),
+                                        ),
+                                        color: Colors.grey[100],
+                                      ),
+                                      Card(
+                                        child: Container(
+                                          child: Text('Adventured'),
+                                          margin: EdgeInsets.all(4),
+                                        ),
+                                        color: Colors.grey[100],
+                                      ),
+                                      Card(
+                                        child: Container(
+                                          child: Text('Manga'),
+                                          margin: EdgeInsets.all(4),
+                                        ),
+                                        color: Colors.grey[100],
+                                      ),
+                                      Card(
+                                        child: Container(
+                                          child: Text('Manhua'),
+                                          margin: EdgeInsets.all(4),
+                                        ),
+                                        color: Colors.grey[100],
+                                      ),
+                                    ],
+                                  ),
+                                  margin: EdgeInsets.only(bottom: 12),
+                                ),
+                                Container(
+                                  child: Text('Up to Ep.122'),
+                                  margin: EdgeInsets.only(left:4, bottom: 12),
+                                )
+                              ],
+                            )
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+                );
+              },
+            ),
           )
         ],
-      ),
-    );
+      );
   }
-
-  Widget _buildCategoryItem = Container(
-      child: Row(
-        children: <Widget>[
-          ClipRRect(
-              borderRadius: BorderRadius.circular(8.0),
-              child:FadeInImage.assetNetwork(
-                  image: 'https://beeng.net/public/assets/manga/2016/KhuMaLuc.jpg',
-                  alignment: Alignment.topRight,
-                  placeholder: 'assets/images/lake.jpg',
-                  fit: BoxFit.cover)
-          ),
-          Column(
-            children: <Widget>[
-              Text('Mortals of the Doom'),
-              Row(
-                children: <Widget>[
-                  Card(
-                    child: Text('Horror'),
-                  ),
-                  Card(
-                    child: Text('Action'),
-                  ),
-                  Card(
-                    child: Text('TimeTravel'),
-                  )
-                ],
-              ),
-              Text('Up to Ep.122')
-            ],
-          )
-        ],
-      ));
 }
