@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import '../detail_manga/detail_manga.dart';
 
 class CategoryComics extends StatefulWidget{
   @override
@@ -53,15 +54,14 @@ class _CategoryListSection extends StatefulWidget {
   const _CategoryListSection({Key key, this.items}) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() {
-    return __CategoryListState(items);
-  }
+  _CategoryListState createState() => _CategoryListState(items);
 }
 
-class __CategoryListState extends State<_CategoryListSection>{
+class _CategoryListState extends State<_CategoryListSection>{
   final List<String> items;
 
-  __CategoryListState(this.items);
+  _CategoryListState(this.items);
+
 
   @override
   Widget build(BuildContext context) {
@@ -71,81 +71,86 @@ class __CategoryListState extends State<_CategoryListSection>{
             child: ListView.builder(
               itemCount: items.length,
               itemBuilder: (context, index) {
-                return Padding(
-                  padding: EdgeInsets.all(12),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Container(
-                        margin: EdgeInsets.only(right: 12),
-                        child: ClipRRect(
-                            borderRadius: BorderRadius.circular(8.0),
-                            child: FadeInImage.assetNetwork(
-                                width: 100,
-                                image: 'https://beeng.net/public/assets/manga/2016/KhuMaLuc.jpg',
-                                alignment: Alignment.topRight,
-                                placeholder: 'assets/images/lake.jpg')),
-                      ),
-                      Expanded(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Container(
-                                  child: Text('Mortals of the Doom',
-                                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),),
-                                  margin: EdgeInsets.only(left:4, bottom: 12),
-                                ),
-                                Container(
-                                  child: Wrap(
-                                    children: <Widget>[
-                                      Card(
-                                        child: Container(
-                                          child: Text('Horror'),
-                                          margin: EdgeInsets.all(4),
-                                        ),
-                                        color: Colors.grey[100],
-                                      ),
-                                      Card(
-                                        child: Container(
-                                          child: Text('Adventured'),
-                                          margin: EdgeInsets.all(4),
-                                        ),
-                                        color: Colors.grey[100],
-                                      ),
-                                      Card(
-                                        child: Container(
-                                          child: Text('Manga'),
-                                          margin: EdgeInsets.all(4),
-                                        ),
-                                        color: Colors.grey[100],
-                                      ),
-                                      Card(
-                                        child: Container(
-                                          child: Text('Manhua'),
-                                          margin: EdgeInsets.all(4),
-                                        ),
-                                        color: Colors.grey[100],
-                                      ),
-                                    ],
-                                  ),
-                                  margin: EdgeInsets.only(bottom: 12),
-                                ),
-                                Container(
-                                  child: Text('Up to Ep.122'),
-                                  margin: EdgeInsets.only(left:4, bottom: 12),
-                                )
-                              ],
-                            )
-                          ],
+                return InkWell(
+                  onTap: (){
+                    Navigator.push(context,  MaterialPageRoute(builder: (context) => DetailManga()));
+                  },
+                  child: Padding(
+                    padding: EdgeInsets.all(12),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Container(
+                          margin: EdgeInsets.only(right: 12),
+                          child: ClipRRect(
+                              borderRadius: BorderRadius.circular(8.0),
+                              child: FadeInImage.assetNetwork(
+                                  width: 100,
+                                  image: 'https://beeng.net/public/assets/manga/2016/KhuMaLuc.jpg',
+                                  alignment: Alignment.topRight,
+                                  placeholder: 'assets/images/lake.jpg')),
                         ),
-                      )
-                    ],
+                        Expanded(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Container(
+                                    child: Text('Mortals of the Doom',
+                                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),),
+                                    margin: EdgeInsets.only(left:4, bottom: 12),
+                                  ),
+                                  Container(
+                                    child: Wrap(
+                                      children: <Widget>[
+                                        Card(
+                                          child: Container(
+                                            child: Text('Horror'),
+                                            margin: EdgeInsets.all(4),
+                                          ),
+                                          color: Colors.grey[100],
+                                        ),
+                                        Card(
+                                          child: Container(
+                                            child: Text('Adventured'),
+                                            margin: EdgeInsets.all(4),
+                                          ),
+                                          color: Colors.grey[100],
+                                        ),
+                                        Card(
+                                          child: Container(
+                                            child: Text('Manga'),
+                                            margin: EdgeInsets.all(4),
+                                          ),
+                                          color: Colors.grey[100],
+                                        ),
+                                        Card(
+                                          child: Container(
+                                            child: Text('Manhua'),
+                                            margin: EdgeInsets.all(4),
+                                          ),
+                                          color: Colors.grey[100],
+                                        ),
+                                      ],
+                                    ),
+                                    margin: EdgeInsets.only(bottom: 12),
+                                  ),
+                                  Container(
+                                    child: Text('Up to Ep.122'),
+                                    margin: EdgeInsets.only(left:4, bottom: 12),
+                                  )
+                                ],
+                              )
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
                   ),
                 );
               },
