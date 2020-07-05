@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class DetailManga extends StatefulWidget {
@@ -8,96 +9,144 @@ class DetailManga extends StatefulWidget {
 class _MainCollapsingToolbarState extends State<DetailManga> {
   @override
   Widget build(BuildContext context) {
-    var _tabs = ["One", "Two"];
     return Scaffold(
-      body: DefaultTabController(
-        length: _tabs.length, // This is the number of tabs.
-        child: NestedScrollView(
-          headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-            // These are the slivers that show up in the "outer" scroll view.
-            return <Widget>[
-              SliverOverlapAbsorber(
-                // This widget takes the overlapping behavior of the SliverAppBar,
-                // and redirects it to the SliverOverlapInjector below. If it is
-                // missing, then it is possible for the nested "inner" scroll view
-                // below to end up under the SliverAppBar even when the inner
-                // scroll view thinks it has not been scrolled.
-                // This is not necessary if the "headerSliverBuilder" only builds
-                // widgets that do not overlap the next sliver.
-                handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
-                child: SliverPersistentHeader(
-                  pinned: true,
-                  delegate: _SliverAppBarDelegate(minHeight: 100, maxHeight: 150, child: Container(
-                    color: Colors.blue,
-                  )),
-                ),
-              ),
-            ];
-          },
-          body: TabBarView(
-            // These are the contents of the tab views, below the tabs.
-            children: _tabs.map((String name) {
-              return SafeArea(
-                top: false,
-                bottom: false,
-                child: Builder(
-                  // This Builder is needed to provide a BuildContext that is
-                  // "inside" the NestedScrollView, so that
-                  // sliverOverlapAbsorberHandleFor() can find the
-                  // NestedScrollView.
-                  builder: (BuildContext context) {
-                    return CustomScrollView(
-                      // The "controller" and "primary" members should be left
-                      // unset, so that the NestedScrollView can control this
-                      // inner scroll view.
-                      // If the "controller" property is set, then this scroll
-                      // view will not be associated with the NestedScrollView.
-                      // The PageStorageKey should be unique to this ScrollView;
-                      // it allows the list to remember its scroll position when
-                      // the tab view is not on the screen.
-                      key: PageStorageKey<String>(name),
-                      slivers: <Widget>[
-                        SliverOverlapInjector(
-                          // This is the flip side of the SliverOverlapAbsorber
-                          // above.
-                          handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
-                        ),
-                        SliverPadding(
-                          padding: const EdgeInsets.all(8.0),
-                          // In this example, the inner scroll view has
-                          // fixed-height list items, hence the use of
-                          // SliverFixedExtentList. However, one could use any
-                          // sliver widget here, e.g. SliverList or SliverGrid.
-                          sliver: SliverFixedExtentList(
-                            // The items in this example are fixed to 48 pixels
-                            // high. This matches the Material Design spec for
-                            // ListTile widgets.
-                            itemExtent: 48.0,
-                            delegate: SliverChildBuilderDelegate(
-                                  (BuildContext context, int index) {
-                                // This builder is called for each child.
-                                // In this example, we just number each list item.
-                                return ListTile(
-                                  title: Text('Item $index'),
-                                );
-                              },
-                              // The childCount of the SliverChildBuilderDelegate
-                              // specifies how many children this inner list
-                              // has. In this example, each tab has a list of
-                              // exactly 30 items, but this is arbitrary.
-                              childCount: 1,
-                            ),
-                          ),
-                        ),
-                      ],
-                    );
-                  },
-                ),
-              );
-            }).toList(),
+      // No appbar provided to the Scaffold, only a body with a
+      // CustomScrollView.
+      body: CustomScrollView(
+        slivers: <Widget>[
+          // Add the app bar to the CustomScrollView.
+          SliverAppBar(
+            // Provide a standard title.
+            centerTitle: true,
+            title: Text('The Supreme System'),
+            // Allows the user to reveal the app bar if they begin scrolling
+            // back up the list of items.
+            floating: true,
+            pinned: true,
+            snap: false,
+            // Display a placeholder widget to visualize the shrinking size.
+            flexibleSpace: FlexibleSpaceBar(
+                background: Image.network(
+                  "https://images.pexels.com/photos/396547/pexels-photo-396547.jpeg?auto=compress&cs=tinysrgb&h=350",
+                  fit: BoxFit.cover,
+                )),
+            // Make the initial height of the SliverAppBar larger than normal.
+            expandedHeight: 200,
           ),
-        ),
+          // Next, create a SliverList
+          SliverList(
+            // Use a delegate to build items as they're scrolled on screen.
+            delegate: SliverChildListDelegate(
+              [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Padding(
+                      padding: EdgeInsets.all(4),
+                      child: Text('Update on Thu, Sun',
+                        style: TextStyle(
+                            color: Colors.deepOrange,
+                            fontWeight: FontWeight.w600),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.all(4),
+                      child: Row(
+                        children: <Widget>[
+                          Icon(Icons.star, color: Colors.yellow,),
+                          Icon(Icons.star, color: Colors.yellow),
+                          Icon(Icons.star, color: Colors.yellow),
+                          Icon(Icons.star, color: Colors.yellow),
+                          Icon(Icons.star),
+                          Text('4.5')
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                Padding(
+                  padding: EdgeInsets.all(4),
+                  child: Text('Một tác phẩm lớn về Giang hồ của Khưu Thụy Tân, theo phong cách hắc ám. '
+                      'Một giang hồ thật sự được khắc họa đầy bạo lực, tanh máu, trần trụi.',
+                      style: TextStyle(
+                          color: Colors.grey,
+                          fontWeight: FontWeight.w500)
+                  ),
+                ),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    _buildChapter,
+                    _buildChapter,
+                    _buildChapter,
+                    _buildChapter,
+                    _buildChapter,
+                    _buildChapter,
+                    _buildChapter,
+                    _buildChapter,
+                    _buildChapter,
+                  ],
+                )
+              ]
+            ),
+          ),
+        ],
+      ),
+      bottomNavigationBar: Container(
+        margin: EdgeInsets.all(4),
+        child: FlatButton(
+            color: Colors.deepOrange,
+            textColor: Colors.white,
+            padding: EdgeInsets.all(8.0),
+            splashColor: Colors.orangeAccent,
+            onPressed: (){
+
+            },
+            child: Text('Read'),
+      )
       ),
     );
   }
+
+  Widget _buildChapter = Wrap(
+    direction: Axis.horizontal,
+    children: <Widget>[
+      Padding(
+        padding: EdgeInsets.all(4),
+        child: Row(
+          children: <Widget>[
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Container(
+                  margin: EdgeInsets.only(bottom: 8, top: 8),
+                  child: Text('1. Episode 1', style: TextStyle(fontWeight: FontWeight.w500),),
+                ),
+                Row(
+                  children: <Widget>[
+                    Text('29/10/2019', style: TextStyle(color: Colors.black26,
+                        fontWeight: FontWeight.w500),),
+                    Container(
+                      margin: EdgeInsets.only(left: 12),
+                      child: Icon(Icons.thumb_up, color: Colors.black26),
+                    ),
+                    Text('1591',style: TextStyle(color: Colors.black26),),
+                    Container(
+                      margin: EdgeInsets.only(left: 12),
+                      child: Icon(Icons.remove_red_eye, color: Colors.black26),
+                    ),
+                    Text('136',style: TextStyle(color: Colors.black26),),
+                  ],
+                ),
+              ],
+            )
+          ],
+        ),
+      ),
+      Divider(
+        color: Colors.black,
+      ),
+    ],
+  );
 }
