@@ -103,42 +103,33 @@ class PageViewWithIndicator extends StatelessWidget{
     return Container(
         width: screenWidth,
         height: screenHeight,
-        child: Stack(
-          children: <Widget>[
-            PageView.builder(
-                itemCount: _homeItemModels.length,
-                itemBuilder: (context, index) {
-                  return _buildViewPageItem(index, screenWidth, screenHeight);
-                },
-                onPageChanged: (int page) {
-                  _controller.add(page);
-                }),
-            Positioned(
-              bottom: 0,
-              left: 0,
-              right: 0,
-              child: Column(
-                children: <Widget>[
-                  Container(
-                    margin: EdgeInsets.only(bottom: 8),
-                    child: IndicatorDoc(_controller.stream, _homeItemModels.length),
-                  ),
-                  Container(
-                    height: 32,
-                    width: double.infinity,
-                    color: Colors.transparent,
-                    child: new Container(
-                      decoration: new BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: new BorderRadius.only(
-                              topLeft: const Radius.circular(48),
-                              topRight: const Radius.circular(48))),
+        child: ClipPath(
+          clipper: MyClipper(),
+          child: Stack(
+            children: <Widget>[
+              PageView.builder(
+                  itemCount: _homeItemModels.length,
+                  itemBuilder: (context, index) {
+                    return _buildViewPageItem(index, screenWidth, screenHeight);
+                  },
+                  onPageChanged: (int page) {
+                    _controller.add(page);
+                  }),
+              Positioned(
+                bottom: 0,
+                left: 0,
+                right: 0,
+                child: Column(
+                  children: <Widget>[
+                    Container(
+                      margin: EdgeInsets.only(bottom: 32),
+                      child: IndicatorDoc(_controller.stream, _homeItemModels.length),
                     ),
-                  ),
-                ],
-              ),
-            )
-          ],
+                  ],
+                ),
+              )
+            ],
+          ),
         ));
   }
 
@@ -384,5 +375,25 @@ class _NewestState extends State<NewestSection>{
             )
           ],
         ));
+  }
+
+
+}
+
+class MyClipper extends CustomClipper<Path> {
+  @override
+  Path getClip(Size size) {
+    var path = Path();
+    path.lineTo(0, size.height);
+    path.quadraticBezierTo(
+        size.width / 2, size.height - 40, size.width, size.height);
+    path.lineTo(size.width, 0);
+    path.close();
+    return path;
+  }
+
+  @override
+  bool shouldReclip(CustomClipper<Path> oldClipter) {
+    return false;
   }
 }
