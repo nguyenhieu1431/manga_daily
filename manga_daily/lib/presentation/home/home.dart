@@ -47,8 +47,9 @@ class _HomePageState extends State<HomePage>{
             builder: (context, snapshot){
               if (snapshot.hasData) {
                 List<HomeItemModel> random = snapshot.data.data.random;
-                random = random.sublist(0,5);
-
+                if(random != null && random.isNotEmpty){
+                  random = random.sublist(0,5);
+                }
                 List<HomeItemModel> latest =snapshot.data.data.latest;
                 List<HomeItemModel> hottest =snapshot.data.data.hottest;
                 List<HomeItemModel> completed =snapshot.data.data.completed;

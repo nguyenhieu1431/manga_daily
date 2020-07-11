@@ -1,6 +1,34 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../detail_manga/detail_manga.dart';
+import '../category/entities/category_response.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'package:paging/paging.dart';
+
+Future<List<MangaItemModel>> fetchMangaListLatestResponse(int skip) async {
+  Map<String, String> requestHeaders = {"x-api-key": "EXsJiI9PvasV2MN0JbM4LMVFI3LeTgTb"};
+  final response =
+  await http.get('https://vncomics.herokuapp.com/api/comics?sort=-updatedAt&skip='+skip.toString(), headers: requestHeaders);
+
+  if (response.statusCode == 200) {
+    return MangaListResponse.fromJson(json.decode(response.body)).data.list;
+  } else {
+    throw Exception('Failed to load list');
+  }
+}
+
+Future<List<MangaItemModel>> fetchMangaListHottestResponse(int skip) async {
+  Map<String, String> requestHeaders = {"x-api-key": "EXsJiI9PvasV2MN0JbM4LMVFI3LeTgTb"};
+  final response =
+  await http.get('https://vncomics.herokuapp.com/api/comics?sort=-viewed&skip='+skip.toString(), headers: requestHeaders);
+
+  if (response.statusCode == 200) {
+    return MangaListResponse.fromJson(json.decode(response.body)).data.list;
+  } else {
+    throw Exception('Failed to load list');
+  }
+}
 
 class CategoryComics extends StatefulWidget{
   @override
@@ -9,7 +37,8 @@ class CategoryComics extends StatefulWidget{
   }
 }
 
-class _CategoryComicsState extends State<CategoryComics> with SingleTickerProviderStateMixin{
+class _CategoryComicsState extends State<CategoryComics>
+    with SingleTickerProviderStateMixin{
   TabController _tabController;
 
   @override
@@ -20,7 +49,6 @@ class _CategoryComicsState extends State<CategoryComics> with SingleTickerProvid
 
   @override
   Widget build(BuildContext context) {
-    List<String> data = List<String>.generate(30, (i) => "Item $i");
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -39,8 +67,8 @@ class _CategoryComicsState extends State<CategoryComics> with SingleTickerProvid
       ),
       body: TabBarView(
         children: <Widget>[
-          _CategoryListSection(items: data),
-          _CategoryListSection(items: data)
+          PagingView(state: 0),
+          PagingView(state: 1)
         ],
         controller: _tabController,
       ),
@@ -48,115 +76,122 @@ class _CategoryComicsState extends State<CategoryComics> with SingleTickerProvid
   }
 }
 
-class _CategoryListSection extends StatefulWidget {
-  final List<String> items;
+class PagingView extends StatefulWidget{
+  final int state;
 
-  const _CategoryListSection({Key key, this.items}) : super(key: key);
+  const PagingView({Key key, this.state}) : super(key: key);
 
   @override
-  _CategoryListState createState() => _CategoryListState(items);
+  State<StatefulWidget> createState() {
+    return _PagingState(state);
+  }
 }
 
-class _CategoryListState extends State<_CategoryListSection>{
-  final List<String> items;
+class _PagingState extends State<PagingView> with AutomaticKeepAliveClientMixin<PagingView>{
+  final int state;
 
-  _CategoryListState(this.items);
-
+  _PagingState(this.state);
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-        children: <Widget>[
-          Expanded(
-            child: ListView.builder(
-              itemCount: items.length,
-              itemBuilder: (context, index) {
-                return InkWell(
-                  onTap: (){
-                    Navigator.push(context,  MaterialPageRoute(builder: (context) => DetailManga()));
-                  },
-                  child: Padding(
-                    padding: EdgeInsets.all(12),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Container(
-                          margin: EdgeInsets.only(right: 12),
-                          child: ClipRRect(
-                              borderRadius: BorderRadius.circular(8.0),
-                              child: FadeInImage.assetNetwork(
-                                  width: 100,
-                                  image: 'https://beeng.net/public/assets/manga/2016/KhuMaLuc.jpg',
-                                  alignment: Alignment.topRight,
-                                  placeholder: 'assets/images/lake.jpg')),
-                        ),
-                        Expanded(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  Container(
-                                    child: Text('Mortals of the Doom',
-                                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),),
-                                    margin: EdgeInsets.only(left:4, bottom: 12),
-                                  ),
-                                  Container(
-                                    child: Wrap(
-                                      children: <Widget>[
-                                        Card(
-                                          child: Container(
-                                            child: Text('Horror'),
-                                            margin: EdgeInsets.all(4),
-                                          ),
-                                          color: Colors.grey[100],
-                                        ),
-                                        Card(
-                                          child: Container(
-                                            child: Text('Adventured'),
-                                            margin: EdgeInsets.all(4),
-                                          ),
-                                          color: Colors.grey[100],
-                                        ),
-                                        Card(
-                                          child: Container(
-                                            child: Text('Manga'),
-                                            margin: EdgeInsets.all(4),
-                                          ),
-                                          color: Colors.grey[100],
-                                        ),
-                                        Card(
-                                          child: Container(
-                                            child: Text('Manhua'),
-                                            margin: EdgeInsets.all(4),
-                                          ),
-                                          color: Colors.grey[100],
-                                        ),
-                                      ],
-                                    ),
-                                    margin: EdgeInsets.only(bottom: 12),
-                                  ),
-                                  Container(
-                                    child: Text('Up to Ep.122'),
-                                    margin: EdgeInsets.only(left:4, bottom: 12),
-                                  )
-                                ],
-                              )
-                            ],
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                );
-              },
+    return Pagination(
+      pageBuilder: (currentListSize){
+        if(state == 0){
+          return fetchMangaListLatestResponse(currentListSize);
+        } else {
+          return fetchMangaListHottestResponse(currentListSize);
+        }
+      },
+      itemBuilder: (index, item)=> _buildItem(item),
+    );
+  }
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
+
+  Widget _buildItem(MangaItemModel item){
+    return InkWell(
+      onTap: (){
+        Navigator.push(context,  MaterialPageRoute(builder: (context) => DetailManga()));
+      },
+      child: Padding(
+        padding: EdgeInsets.all(12),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Container(
+              margin: EdgeInsets.only(right: 12),
+              child: ClipRRect(
+                  borderRadius: BorderRadius.circular(8.0),
+                  child: FadeInImage.assetNetwork(
+                      width: 100,
+                      image: item.cover,
+                      alignment: Alignment.topRight,
+                      placeholder: 'assets/images/place_holder_port.jpg')),
             ),
-          )
-        ],
-      );
+            Expanded(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Container(
+                        child: Text(item.name,
+                          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),),
+                        margin: EdgeInsets.only(left:4, bottom: 12),
+                      ),
+                      Container(
+                        child: Wrap(
+                          children: <Widget>[
+                            Card(
+                              child: Container(
+                                child: Text('Horror'),
+                                margin: EdgeInsets.all(4),
+                              ),
+                              color: Colors.grey[100],
+                            ),
+                            Card(
+                              child: Container(
+                                child: Text('Adventured'),
+                                margin: EdgeInsets.all(4),
+                              ),
+                              color: Colors.grey[100],
+                            ),
+                            Card(
+                              child: Container(
+                                child: Text('Manga'),
+                                margin: EdgeInsets.all(4),
+                              ),
+                              color: Colors.grey[100],
+                            ),
+                            Card(
+                              child: Container(
+                                child: Text('Manhua'),
+                                margin: EdgeInsets.all(4),
+                              ),
+                              color: Colors.grey[100],
+                            ),
+                          ],
+                        ),
+                        margin: EdgeInsets.only(bottom: 12),
+                      ),
+                      Container(
+                        child: Text('Up to Ep.122'),
+                        margin: EdgeInsets.only(left:4, bottom: 12),
+                      )
+                    ],
+                  )
+                ],
+              ),
+            )
+          ],
+        ),
+      ),
+    );
   }
 }
