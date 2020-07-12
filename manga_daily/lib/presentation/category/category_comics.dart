@@ -148,34 +148,9 @@ class _PagingState extends State<PagingView> with AutomaticKeepAliveClientMixin<
                       Container(
                         child: Wrap(
                           children: <Widget>[
-                            Card(
-                              child: Container(
-                                child: Text('Horror'),
-                                margin: EdgeInsets.all(4),
-                              ),
-                              color: Colors.grey[100],
-                            ),
-                            Card(
-                              child: Container(
-                                child: Text('Adventured'),
-                                margin: EdgeInsets.all(4),
-                              ),
-                              color: Colors.grey[100],
-                            ),
-                            Card(
-                              child: Container(
-                                child: Text('Manga'),
-                                margin: EdgeInsets.all(4),
-                              ),
-                              color: Colors.grey[100],
-                            ),
-                            Card(
-                              child: Container(
-                                child: Text('Manhua'),
-                                margin: EdgeInsets.all(4),
-                              ),
-                              color: Colors.grey[100],
-                            ),
+                            _buildCategoryItem,
+                            _buildCategoryItem,
+                            _buildCategoryItem
                           ],
                         ),
                         margin: EdgeInsets.only(bottom: 12),
@@ -194,4 +169,15 @@ class _PagingState extends State<PagingView> with AutomaticKeepAliveClientMixin<
       ),
     );
   }
+
+  Widget _buildCategoryItem = Container(
+      padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      margin: EdgeInsets.only(left:4, right: 4),
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(16),
+          color: Colors.white,
+          border: Border.all(color: Colors.black)
+      ),
+      child: Text('Horror')
+  );
 }
